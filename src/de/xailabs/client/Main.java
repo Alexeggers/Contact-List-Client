@@ -3,8 +3,8 @@ package de.xailabs.client;
 public class Main {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
+		ServerConnection sc = new ServerConnection("127.0.0.1", 13337);
+		sc.startConnection();
 	}
 
 }
