@@ -6,6 +6,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+import de.xailabs.interfaces.ICommandObject;
 import de.xailabs.interfaces.IContact;
 
 public class ServerConnection {
@@ -17,7 +18,6 @@ public class ServerConnection {
     	this.portNumber = portNumber;
     }
     
-    
     public void startConnection() {
 	    try (
 	        Socket echoSocket = new Socket(hostName, portNumber);
@@ -26,7 +26,7 @@ public class ServerConnection {
 	    ){
 	    	System.out.println("Connection established");
 	    	IContact contact = new Contact("Alex", "3543514321351", "Notestest");
-	    	CommandObject co = new CommandObject("new contact", contact);
+	    	ICommandObject co = new CommandObject("new contact", contact);
 	    	out.writeObject(co);
 	    	out.flush();
 	    } catch (UnknownHostException e) {
