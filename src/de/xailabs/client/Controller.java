@@ -23,6 +23,11 @@ public class Controller {
 		gui.buildGUI();
 	}
 	
+	/**
+	 * Converts a list of Contacts into a vector that can be used to create a JTable.
+	 * @param contacts List of contacts.
+	 * @return Vector to be used in creating a JTable.
+	 */
 	private Vector<Vector<String>> convertToTableVector(List<IContact> contacts) {
 		Vector<Vector<String>> tableData = new Vector<Vector<String>>();
 		Vector<String> intermediaryVector;
@@ -37,16 +42,27 @@ public class Controller {
 		return tableData;
 	}
 
+	/**
+	 * Deletes a contact in SQL and sets new tableData.
+	 * @param contact Contact to be deleted.
+	 */
 	public void deleteContact(IContact contact) {
 		commandObject = new CommandObject("delete contact", contact);
 		sendAndReceive();
 	}
 	
+	/**
+	 * Updates tableData to correspond to current state of SQL table.
+	 */
 	public void viewAllContacts() {
 		commandObject = new CommandObject("view all contacts");
 		sendAndReceive();
 	}
-
+	
+	/**
+	 * Set tableData in gui
+	 * @param tableData
+	 */
 	private void updateTableData(Vector<Vector<String>> tableData) {
 		gui.setTableData(tableData);
 	}
