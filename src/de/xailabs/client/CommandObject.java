@@ -34,12 +34,12 @@ public class CommandObject implements ICommandObject, Serializable {
 	public void setCommand(String command) {
 		this.command = command;
 	}
-
+	
 	@Override
 	public String getCommand() {
 		return command;
 	}
-
+	
 	@Override
 	public void setContact(IContact contact) {
 		this.contact = contact;
