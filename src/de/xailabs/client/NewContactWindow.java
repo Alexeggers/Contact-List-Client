@@ -59,6 +59,7 @@ public class NewContactWindow {
 				String notes = notesField.getText();
 				contact = new Contact(name, number, notes);
 				controller.newContact(contact);
+				controller.refreshGUI();
 				frame.setVisible(false);
 				frame.dispose();
 			}

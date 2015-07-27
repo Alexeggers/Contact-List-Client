@@ -68,6 +68,7 @@ public class UpdateContactWindow extends JFrame {
 				String notes = notesField.getText();
 				Contact contact = new Contact(id, name, number, notes);
 				controller.updateContact(contact);
+				controller.refreshGUI();
 				frame.setVisible(false);
 				frame.dispose();
 			}

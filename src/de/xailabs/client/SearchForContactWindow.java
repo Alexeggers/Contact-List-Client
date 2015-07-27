@@ -59,6 +59,7 @@ public class SearchForContactWindow {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				controller.searchContact(searchField.getText());
+				controller.refreshGUI();
 			}
 		});
 		

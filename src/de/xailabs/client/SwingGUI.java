@@ -109,8 +109,7 @@ public class SwingGUI {
 		newContactButton.addActionListener(new NewContactSubclass());
 
 		searchForContactButton = new JButton("Search");
-		searchForContactButton
-				.addActionListener(new SearchForContactSubclass());
+		searchForContactButton.addActionListener(new SearchForContactSubclass());
 
 		updateContactButton = new JButton("Update Contact");
 		updateContactButton.addActionListener(new UpdateContactSubclass());
@@ -120,7 +119,7 @@ public class SwingGUI {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				controller.updateView();
+				controller.viewAllContacts();
 				refreshTable();
 			}
 		});
