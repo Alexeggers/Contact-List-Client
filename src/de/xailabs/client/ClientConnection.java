@@ -5,9 +5,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.List;
-
-import de.xailabs.interfaces.IContact;
 
 public class ClientConnection {
 	private String hostName;

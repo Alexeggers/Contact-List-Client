@@ -58,10 +58,10 @@ public class NewContactWindow {
 				String number = numberField.getText();
 				String notes = notesField.getText();
 				contact = new Contact(name, number, notes);
-				controller.newContact(contact);
-				controller.refreshGUI();
 				frame.setVisible(false);
 				frame.dispose();
+				controller.newContact(contact);
+				controller.refreshGUI();
 			}
 		});
 		
@@ -116,9 +116,5 @@ public class NewContactWindow {
 		buttonPanel.setBackground(Color.white);
 		textPanel.setBackground(Color.white);
 		frame.setVisible(true);
-	}
-	
-	public Contact getContact() {
-		return contact;
 	}
 }

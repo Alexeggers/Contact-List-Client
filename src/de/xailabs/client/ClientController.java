@@ -31,13 +31,15 @@ public class ClientController {
 	private Vector<Vector<String>> convertToTableVector(List<IContact> contacts) {
 		Vector<Vector<String>> tableData = new Vector<Vector<String>>();
 		Vector<String> intermediaryVector;
-		for(IContact contact : contacts) {
-			intermediaryVector = new Vector<String>();
-			intermediaryVector.add(String.valueOf(contact.getId()));
-			intermediaryVector.add(contact.getName());
-			intermediaryVector.add(contact.getPhonenumber());
-			intermediaryVector.add(contact.getNotes());
-			tableData.add(intermediaryVector);
+		if (contacts != null) {
+			for(IContact contact : contacts) {
+				intermediaryVector = new Vector<String>();
+				intermediaryVector.add(String.valueOf(contact.getId()));
+				intermediaryVector.add(contact.getName());
+				intermediaryVector.add(contact.getPhonenumber());
+				intermediaryVector.add(contact.getNotes());
+				tableData.add(intermediaryVector);
+			}
 		}
 		return tableData;
 	}
@@ -51,6 +53,7 @@ public class ClientController {
 		commandObject = new CommandObject("delete contact", contact);
 		serverConnection.sendCommand(commandObject);
 		contacts.remove(selectedRow);
+		refreshGUI();
 	}
 	
 	/**
@@ -70,6 +73,7 @@ public class ClientController {
 	}
 	
 	public void refreshGUI() {
+		updateTableData(convertToTableVector(contacts));
 		gui.refreshTable();
 	}
 
@@ -97,7 +101,10 @@ public class ClientController {
 
 	public void newContact(Contact contact) {
 		commandObject = new CommandObject("new contact", contact);
-		sendAndReceiveContacts();
+		int id = (Integer) serverConnection.sendAndGet(commandObject);
+		contact.setId(id);
+		contacts.add(contact);
+		refreshGUI();
 	}
 	
 	@SuppressWarnings("unchecked")
