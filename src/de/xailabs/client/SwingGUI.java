@@ -49,7 +49,7 @@ public class SwingGUI {
 		buttonPanel.setBackground(Color.WHITE);
 		tablePanel = new JPanel();
 		tablePanel.setBackground(Color.WHITE);
-
+		
 		buildButtons();
 
 		buttonPanel.add(newContactButton);
@@ -114,6 +114,10 @@ public class SwingGUI {
 				refreshTable();
 			}
 		});
+	}
+	
+	public void outOfSyncWarning() {
+		JOptionPane.showMessageDialog(contactListWindow, "List out of sync and will be updated, please try again");
 	}
 
 	private class NewContactSubclass implements ActionListener {

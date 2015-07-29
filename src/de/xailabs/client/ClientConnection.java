@@ -15,7 +15,6 @@ public class ClientConnection {
     private Socket echoSocket;
     private ObjectOutputStream out;
     private ObjectInputStream in; 
-    List<IContact> contacts;
     
     public ClientConnection(String hostName, int portNumber) {
     	this.hostName = hostName;
@@ -37,16 +36,16 @@ public class ClientConnection {
 	    }
     }
     
-    @SuppressWarnings("unchecked")
-	public List<IContact> sendAndGet(CommandObject commandObject) {
+	public Object sendAndGet(CommandObject commandObject) {
+    	Object returnObject = null;
     	try {
 			out.writeObject(commandObject);
 			out.flush();
-			contacts = (List<IContact>) in.readObject();
+			returnObject = in.readObject();
 		} catch (ClassNotFoundException | IOException e) {
 			e.printStackTrace();
 		}
-    	return contacts;
+    	return returnObject;
     }
     
     public void sendCommand(CommandObject commandObject) {
@@ -56,20 +55,6 @@ public class ClientConnection {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-    }
-    
-    public boolean checkVersion(CommandObject commandObject) {
-    	boolean congruent = false;
-    	try {
-    		out.writeObject(commandObject);
-    		out.flush();
-    		congruent = (Boolean) in.readObject();
-    	} catch (IOException e) {
-    		e.printStackTrace();
-    	} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
-    	return congruent;
     }
     
     public void closeConnection() {

@@ -58,7 +58,7 @@ public class ClientController {
 	 */
 	public void viewAllContacts() {
 		commandObject = new CommandObject("view all contacts");
-		sendAndReceive();
+		sendAndReceiveContacts();
 	}
 	
 	/**
@@ -82,22 +82,27 @@ public class ClientController {
 			updateTableData(convertToTableVector(contacts));
 		} else {
 			commandObject = new CommandObject("view all contacts");
-			sendAndReceive();
+			sendAndReceiveContacts();
 		}
+	}
+	
+	public void outOfSyncWarning() {
+		gui.outOfSyncWarning();
 	}
 
 	public void searchContact(String searchparameter) {
 		commandObject = new CommandObject("search contact", searchparameter);
-		sendAndReceive();
+		sendAndReceiveContacts();
 	}
 
 	public void newContact(Contact contact) {
 		commandObject = new CommandObject("new contact", contact);
-		sendAndReceive();
+		sendAndReceiveContacts();
 	}
 	
-	public void sendAndReceive() {
-		contacts = serverConnection.sendAndGet(commandObject);
+	@SuppressWarnings("unchecked")
+	public void sendAndReceiveContacts() {
+		contacts = (List<IContact>) serverConnection.sendAndGet(commandObject);
 		updateTableData(convertToTableVector(contacts));
 	}
 	
@@ -108,7 +113,7 @@ public class ClientController {
 	public boolean checkVersion(IContact contact) {
 		boolean congruent;
 		CommandObject commandObject = new CommandObject("check version", contact);
-		congruent = serverConnection.checkVersion(commandObject);
+		congruent = (Boolean) serverConnection.sendAndGet(commandObject);
 		return congruent;
 	}
 	
