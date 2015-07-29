@@ -21,7 +21,7 @@ public class SearchForContactWindow {
 	private JTextField searchField;
 	private Instruction instructions;
 	
-	public SearchForContactWindow(JFrame contactListWindow, Controller controller) {
+	public SearchForContactWindow(JFrame contactListWindow, ClientController controller) {
 		JFrame frame = new JFrame();
 		frame.setLocationRelativeTo(contactListWindow);
 		frame.setBounds(200, 200, 400, 200);

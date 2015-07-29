@@ -7,25 +7,21 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.List;
 
-import de.xailabs.interfaces.ICommandObject;
 import de.xailabs.interfaces.IContact;
 
-public class ServerConnection {
+public class ClientConnection {
 	private String hostName;
     private int portNumber;
-    private Controller controller;
     private Socket echoSocket;
     private ObjectOutputStream out;
     private ObjectInputStream in; 
     List<IContact> contacts;
     
-    public ServerConnection(String hostName, int portNumber, Controller controller) {
+    public ClientConnection(String hostName, int portNumber) {
     	this.hostName = hostName;
     	this.portNumber = portNumber;
-    	this.controller = controller;
     }
     
-    @SuppressWarnings("unchecked")
     public void startConnection() {
 	    try {
 	        echoSocket = new Socket(hostName, portNumber);
@@ -36,14 +32,13 @@ public class ServerConnection {
 	        System.err.println("Don't know about host " + hostName);
 	        System.exit(1);
 	    } catch (IOException e) {
-	        System.err.println("Couldn't get I/O for the connection to " +
-	            hostName);
+	        System.err.println("Couldn't get I/O for the connection to " + hostName);
 	        System.exit(1);
 	    }
     }
     
     @SuppressWarnings("unchecked")
-	public List<IContact> sendCommand(CommandObject commandObject) {
+	public List<IContact> sendAndGet(CommandObject commandObject) {
     	try {
 			out.writeObject(commandObject);
 			out.flush();
@@ -52,6 +47,29 @@ public class ServerConnection {
 			e.printStackTrace();
 		}
     	return contacts;
+    }
+    
+    public void sendCommand(CommandObject commandObject) {
+    	try {
+			out.writeObject(commandObject);
+			out.flush();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+    }
+    
+    public boolean checkVersion(CommandObject commandObject) {
+    	boolean congruent = false;
+    	try {
+    		out.writeObject(commandObject);
+    		out.flush();
+    		congruent = (Boolean) in.readObject();
+    	} catch (IOException e) {
+    		e.printStackTrace();
+    	} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+    	return congruent;
     }
     
     public void closeConnection() {

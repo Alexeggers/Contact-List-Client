@@ -16,6 +16,8 @@ import javax.swing.JTextField;
 
 import org.jdesktop.xswingx.PromptSupport;
 
+import de.xailabs.interfaces.IContact;
+
 
 public class UpdateContactWindow extends JFrame {
 
@@ -32,12 +34,12 @@ public class UpdateContactWindow extends JFrame {
 	private JTextField numberField;
 	private JTextField notesField;
 	
-	public UpdateContactWindow(JFrame contactListWindow, Controller controller, int selectedRow, Vector<Vector<String>> tableData) {
-		Vector<String> dataVector = tableData.get(selectedRow);
-		id = Integer.parseInt(dataVector.get(0));
-		defaultName = dataVector.get(1);
-		defaultNumber = dataVector.get(2);
-		defaultNotes = dataVector.get(3);
+	public UpdateContactWindow(JFrame contactListWindow, ClientController controller, int selectedRow) {
+		IContact contact = controller.getContact(selectedRow);
+		id = contact.getId();
+		defaultName = contact.getName();
+		defaultNumber = contact.getPhonenumber();
+		defaultNotes = contact.getNotes();
 		frame = new JFrame("Update Contact");
 		frame.setLocationRelativeTo(contactListWindow);
 		frame.setBounds(200, 200, 400, 200);
@@ -66,8 +68,8 @@ public class UpdateContactWindow extends JFrame {
 				String name = nameField.getText();
 				String number = numberField.getText();
 				String notes = notesField.getText();
-				Contact contact = new Contact(id, name, number, notes);
-				controller.updateContact(contact);
+				Contact updatedContact = new Contact(id, name, number, notes, contact.getVersion());
+				controller.updateContact(updatedContact, selectedRow);
 				controller.refreshGUI();
 				frame.setVisible(false);
 				frame.dispose();

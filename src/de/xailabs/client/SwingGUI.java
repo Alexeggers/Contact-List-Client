@@ -29,7 +29,7 @@ public class SwingGUI {
 	private static Vector<String> columnNames;
 	private Vector<Vector<String>> tableData;
 
-	private Controller controller;
+	private ClientController controller;
 
 	static {
 		columnNames = new Vector<String>();
@@ -71,20 +71,11 @@ public class SwingGUI {
 		this.tableData = tableVector;
 	}
 
-	public void setController(Controller controller) {
+	public void setController(ClientController controller) {
 		this.controller = controller;
 	}
 
-	public Contact buildSelectedContact() {
-		int selectedRow = contactTable.getSelectedRow();
-		Contact contact = new Contact(Integer.parseInt(tableData.get(
-				selectedRow).get(0)), tableData.get(selectedRow).get(1),
-				tableData.get(selectedRow).get(2), tableData.get(selectedRow).get(3));
-		return contact;
-	}
-
 	public void refreshTable() {
-		
 		tablePanel.removeAll();
 		tablePanel.revalidate();
 		TableModel contactModel = new DefaultTableModel(tableData, columnNames);
@@ -100,7 +91,7 @@ public class SwingGUI {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (contactTable.getSelectedRow() != -1) {
-					controller.deleteContact(buildSelectedContact());
+					controller.deleteContact(contactTable.getSelectedRow());
 					refreshTable();
 				}
 			}
@@ -149,7 +140,7 @@ public class SwingGUI {
 		public void actionPerformed(ActionEvent e) {
 			if (contactTable.getSelectedRow() != -1) {
 				@SuppressWarnings("unused")
-				UpdateContactWindow updateWindow = new UpdateContactWindow(contactListWindow, controller, contactTable.getSelectedRow(), tableData);
+				UpdateContactWindow updateWindow = new UpdateContactWindow(contactListWindow, controller, contactTable.getSelectedRow());
 			}
 		}
 	}

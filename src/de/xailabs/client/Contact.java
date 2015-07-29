@@ -14,20 +14,34 @@ public class Contact implements IContact, Serializable {
 	private String name;
 	private String phonenumber;
 	private String notes;
+	private int version = 1;
 	
 	public Contact() {
 		
 	}
 	
 	public Contact(String name, String phonenumber, String notes) {
-		this.name = name;
-		this.phonenumber = phonenumber;
-		this.notes = notes;
+		if (name.equals("")) {
+			this.name = "defaultname";
+		} else {
+			this.name = name;
+		}
+		if (phonenumber.equals("")) {
+			this.phonenumber = "000-0000 00 00";
+		} else {
+			this.phonenumber = phonenumber;
+		}
+		if (notes.equals("")) {
+			this.notes = "defaultnotes";
+		} else {
+			this.notes = notes;
+		}
 	}
 	
-	public Contact(int id, String name, String phonenumber, String notes) {
+	public Contact(int id, String name, String phonenumber, String notes, int version) {
 		this(name, phonenumber, notes);
 		this.id = id;
+		this.version = version;
 	}
 	
 	
@@ -52,6 +66,11 @@ public class Contact implements IContact, Serializable {
 	}
 
 	@Override
+	public void setVersion(int version) {
+		this.version = version;
+	}
+
+	@Override
 	public String getName() {
 		return name;
 	}
@@ -69,6 +88,16 @@ public class Contact implements IContact, Serializable {
 	@Override
 	public int getId() {
 		return id;
+	}
+
+	@Override
+	public int getVersion() {
+		return version;
+	}
+	
+	@Override
+	public void incrementVersion() {
+		this.version += 1;
 	}
 	
 }

@@ -6,15 +6,15 @@ import java.util.Vector;
 import de.xailabs.interfaces.IContact;
 
 
-public class Controller {
+public class ClientController {
 
-	private ServerConnection serverConnection;
+	private ClientConnection serverConnection;
 	private CommandObject commandObject;
 	private SwingGUI gui;
 	private List<IContact> contacts;
 	
 	public void start() {
-		serverConnection = new ServerConnection("127.0.0.1", 13337, this);
+		serverConnection = new ClientConnection("127.0.0.1", 13337);
 		serverConnection.startConnection();
 		SwingGUI gui = new SwingGUI();
 		setGUI(gui);
@@ -46,9 +46,11 @@ public class Controller {
 	 * Deletes a contact in SQL and sets new tableData.
 	 * @param contact Contact to be deleted.
 	 */
-	public void deleteContact(IContact contact) {
+	public void deleteContact(int selectedRow) {
+		IContact contact = getContact(selectedRow);
 		commandObject = new CommandObject("delete contact", contact);
-		sendAndReceive();
+		serverConnection.sendCommand(commandObject);
+		contacts.remove(selectedRow);
 	}
 	
 	/**
@@ -71,9 +73,17 @@ public class Controller {
 		gui.refreshTable();
 	}
 
-	public void updateContact(Contact contact) {
-		commandObject = new CommandObject("update contact", contact);
-		sendAndReceive();
+	public void updateContact(Contact contact, int selectedRow) {
+		if(checkVersion(contact)) {
+			commandObject = new CommandObject("update contact", contact);
+			serverConnection.sendCommand(commandObject);
+			contacts.set(selectedRow, contact);
+			contacts.get(selectedRow).incrementVersion();
+			updateTableData(convertToTableVector(contacts));
+		} else {
+			commandObject = new CommandObject("view all contacts");
+			sendAndReceive();
+		}
 	}
 
 	public void searchContact(String searchparameter) {
@@ -87,11 +97,23 @@ public class Controller {
 	}
 	
 	public void sendAndReceive() {
-		contacts = serverConnection.sendCommand(commandObject);
+		contacts = serverConnection.sendAndGet(commandObject);
 		updateTableData(convertToTableVector(contacts));
 	}
 	
 	private void setGUI(SwingGUI gui) {
 		this.gui = gui;
+	}
+	
+	public boolean checkVersion(IContact contact) {
+		boolean congruent;
+		CommandObject commandObject = new CommandObject("check version", contact);
+		congruent = serverConnection.checkVersion(commandObject);
+		return congruent;
+	}
+	
+	public IContact getContact(int selectedRow) {
+		IContact contact = contacts.get(selectedRow);
+		return contact;
 	}
 }

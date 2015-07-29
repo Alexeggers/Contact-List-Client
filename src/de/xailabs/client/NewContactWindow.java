@@ -23,7 +23,7 @@ public class NewContactWindow {
 	private Instruction instructions;
 	private Contact contact;
 	
-	public NewContactWindow(JFrame superFrame, Controller controller) {
+	public NewContactWindow(JFrame superFrame, ClientController controller) {
 		frame = new JFrame("New Contact");
 		instructions = new Instruction("Enter new contact information", 20);
 		frame.setLocationRelativeTo(superFrame);
