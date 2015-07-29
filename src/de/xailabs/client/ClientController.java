@@ -72,11 +72,19 @@ public class ClientController {
 		gui.setTableData(tableData);
 	}
 	
+	/**
+	 * Refreshes the table with the locally stored contacts.
+	 */
 	public void refreshGUI() {
 		updateTableData(convertToTableVector(contacts));
 		gui.refreshTable();
 	}
 
+	/**
+	 * Updates a contact in SQL and refreshes the table with the new information.
+	 * @param contact The changed contact
+	 * @param selectedRow The contacts row in the table
+	 */
 	public void updateContact(Contact contact, int selectedRow) {
 		if(checkVersion(contact)) {
 			commandObject = new CommandObject("update contact", contact);
@@ -90,15 +98,26 @@ public class ClientController {
 		}
 	}
 	
+	/**
+	 * Makes the GUI bring up a warning prompt when a contact is out of sync.
+	 */
 	public void outOfSyncWarning() {
 		gui.outOfSyncWarning();
 	}
 
+	/**
+	 * Searches for a contact by name and notes and refreshes table with the found information.
+	 * @param searchparameter The parameter being looked for 
+	 */
 	public void searchContact(String searchparameter) {
 		commandObject = new CommandObject("search contact", searchparameter);
 		sendAndReceiveContacts();
 	}
 
+	/**
+	 * Creates a new contact in SQL and in the locally stored list, the updates the table.
+	 * @param contact The new contact
+	 */
 	public void newContact(Contact contact) {
 		commandObject = new CommandObject("new contact", contact);
 		int id = (Integer) serverConnection.sendAndGet(commandObject);
@@ -107,16 +126,28 @@ public class ClientController {
 		refreshGUI();
 	}
 	
+	/**
+	 * Sends out a command and receives a list of contacts back.
+	 */
 	@SuppressWarnings("unchecked")
 	public void sendAndReceiveContacts() {
 		contacts = (List<IContact>) serverConnection.sendAndGet(commandObject);
 		updateTableData(convertToTableVector(contacts));
 	}
 	
+	/**
+	 * Sets the gui this controller will influence.
+	 * @param gui The gui in question
+	 */
 	private void setGUI(SwingGUI gui) {
 		this.gui = gui;
 	}
 	
+	/**
+	 * Checks the version of the contact being edited.
+	 * @param contact The contact
+	 * @return Boolean True if the contacts are in sync, false if they aren't
+	 */
 	public boolean checkVersion(IContact contact) {
 		boolean congruent;
 		CommandObject commandObject = new CommandObject("check version", contact);
@@ -124,6 +155,11 @@ public class ClientController {
 		return congruent;
 	}
 	
+	/**
+	 * Returns a contact from the locally stored list.
+	 * @param selectedRow The position of the contact in the list
+	 * @return Contact being looked for
+	 */
 	public IContact getContact(int selectedRow) {
 		IContact contact = contacts.get(selectedRow);
 		return contact;

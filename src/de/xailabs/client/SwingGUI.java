@@ -39,6 +39,9 @@ public class SwingGUI {
 		columnNames.add("Notes");
 	}
 
+	/**
+	 * Builds the GUI
+	 */
 	public void buildGUI() {
 		contactListWindow = new JFrame("Contact List");
 		contactListWindow.setLocationRelativeTo(null);
@@ -67,14 +70,9 @@ public class SwingGUI {
 		contactListWindow.setVisible(true);
 	}
 
-	public void setTableData(Vector<Vector<String>> tableVector) {
-		this.tableData = tableVector;
-	}
-
-	public void setController(ClientController controller) {
-		this.controller = controller;
-	}
-
+	/**
+	 * Redraws the table with (presumably) new information.
+	 */
 	public void refreshTable() {
 		tablePanel.removeAll();
 		tablePanel.revalidate();
@@ -83,7 +81,18 @@ public class SwingGUI {
 		JScrollPane tableContainer = new JScrollPane(contactTable);
 		tablePanel.add(tableContainer);
 	}
+	
+	/**
+	 * Sets this GUI's controller to the one provided.
+	 * @param controller
+	 */
+	public void setController(ClientController controller) {
+		this.controller = controller;
+	}
 
+	/**
+	 * Sets up the buttons used in the GUI.
+	 */
 	public void buildButtons() {
 		deleteContactButton = new JButton("Delete Contact");
 		deleteContactButton.addActionListener( new ActionListener() {
@@ -116,6 +125,9 @@ public class SwingGUI {
 		});
 	}
 	
+	/**
+	 * Calls up a dialog window that warns the user that the contact he wants to update is out of sync.
+	 */
 	public void outOfSyncWarning() {
 		JOptionPane.showMessageDialog(contactListWindow, "List out of sync and will be updated, please try again");
 	}
@@ -147,5 +159,13 @@ public class SwingGUI {
 				UpdateContactWindow updateWindow = new UpdateContactWindow(contactListWindow, controller, contactTable.getSelectedRow());
 			}
 		}
+	}
+
+	/**
+	 * Sets this GUI's tabledata to the one provided.
+	 * @param tableData Vector<Vector<String>> format tabledata
+	 */
+	public void setTableData(Vector<Vector<String>> tableData) {
+		this.tableData = tableData;
 	}
 }

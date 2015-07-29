@@ -18,6 +18,9 @@ public class ClientConnection {
     	this.portNumber = portNumber;
     }
     
+    /**
+     * Starts the connection with the server.
+     */
     public void startConnection() {
 	    try {
 	        echoSocket = new Socket(hostName, portNumber);
@@ -33,6 +36,11 @@ public class ClientConnection {
 	    }
     }
     
+    /**
+     * Sends out a command and receives an object back.
+     * @param commandObject The object containing the command and, depending on the command, a contact or search parameter
+     * @return An object that will be handled by the method calling sendAndGet
+     */
 	public Object sendAndGet(CommandObject commandObject) {
     	Object returnObject = null;
     	try {
@@ -45,6 +53,10 @@ public class ClientConnection {
     	return returnObject;
     }
     
+	/**
+	 * Sends out a command to the server.
+	 * @param commandObject The object containing the command and, depending on the command, a contact or search parameter
+	 */
     public void sendCommand(CommandObject commandObject) {
     	try {
 			out.writeObject(commandObject);
@@ -53,7 +65,9 @@ public class ClientConnection {
 			e.printStackTrace();
 		}
     }
-    
+    /**
+     * Closes the connection to the server.
+     */
     public void closeConnection() {
     	try {
     		in.close();
