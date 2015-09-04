@@ -13,6 +13,10 @@ public class ClientController {
 	private SwingGUI gui;
 	private List<IContact> contacts;
 	
+	
+	/**
+	 * Starts up the client and connects it to the server, then sets up the GUI and commands it to build itself.
+	 */
 	public void start() {
 		serverConnection = new ClientConnection("127.0.0.1", 13337);
 		serverConnection.startConnection();
@@ -38,6 +42,7 @@ public class ClientController {
 				intermediaryVector.add(contact.getName());
 				intermediaryVector.add(contact.getPhonenumber());
 				intermediaryVector.add(contact.getNotes());
+				intermediaryVector.add(contact.getAddress().getStreet() + " " + contact.getAddress().getHousenumber());
 				tableData.add(intermediaryVector);
 			}
 		}
@@ -65,7 +70,7 @@ public class ClientController {
 	}
 	
 	/**
-	 * Set tableData in gui
+	 * Set tableData in the GUI.
 	 * @param tableData
 	 */
 	private void updateTableData(Vector<Vector<String>> tableData) {
@@ -85,17 +90,17 @@ public class ClientController {
 	 * @param contact The changed contact
 	 * @param selectedRow The contacts row in the table
 	 */
-	public void updateContact(Contact contact, int selectedRow) {
-		if(checkVersion(contact)) {
-			commandObject = new CommandObject("update contact", contact);
-			serverConnection.sendCommand(commandObject);
-			contacts.set(selectedRow, contact);
-			contacts.get(selectedRow).incrementVersion();
-			updateTableData(convertToTableVector(contacts));
-		} else {
-			commandObject = new CommandObject("view all contacts");
-			sendAndReceiveContacts();
-		}
+	public void updateContact(IContact contact, int selectedRow) {
+		commandObject = new CommandObject("update contact", contact);
+		serverConnection.sendCommand(commandObject);
+		contacts.set(selectedRow, contact);
+		contacts.get(selectedRow).incrementVersion();
+	}
+	
+	public IContact getDBContact(IContact contact) {
+		commandObject = new CommandObject("get contact", contact);
+		contact = (Contact) serverConnection.sendAndGet(commandObject);
+		return contact;
 	}
 	
 	/**
@@ -161,7 +166,6 @@ public class ClientController {
 	 * @return Contact being looked for
 	 */
 	public IContact getContact(int selectedRow) {
-		IContact contact = contacts.get(selectedRow);
-		return contact;
+		return contacts.get(selectedRow);
 	}
 }

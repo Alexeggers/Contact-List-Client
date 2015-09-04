@@ -14,7 +14,7 @@ public class ContactTable extends JTable {
 
 	public ContactTable(TableModel model) {
 		super(model);
-		this.setSize(1024, 586);
+		this.setSize(1500, 586);
 		this.setBackground(Color.WHITE);
 		this.setRowHeight(20);
 		this.setOpaque(true);

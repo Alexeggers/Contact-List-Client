@@ -37,6 +37,7 @@ public class SwingGUI {
 		columnNames.add("Name");
 		columnNames.add("Phone Number");
 		columnNames.add("Notes");
+		columnNames.add("Address");
 	}
 
 	/**
@@ -129,7 +130,7 @@ public class SwingGUI {
 	 * Calls up a dialog window that warns the user that the contact he wants to update is out of sync.
 	 */
 	public void outOfSyncWarning() {
-		JOptionPane.showMessageDialog(contactListWindow, "List out of sync and will be updated, please try again");
+		JOptionPane.showMessageDialog(contactListWindow, "Contact is not up to date. You will be presented with the updated contact.");
 	}
 
 	private class NewContactSubclass implements ActionListener {

@@ -2,44 +2,42 @@ package de.xailabs.client;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import de.xailabs.interfaces.IAddress;
 
 @Entity
 @Table(name="Addresses")
 @NamedQueries({
-	@NamedQuery(name="address.getAll", query="SELECT a from Address a")
+	@NamedQuery(name="address.findStreet", query="SELECT a FROM Address a WHERE a.street LIKE ?1 AND a.housenumber LIKE ?2"),
 })
-public class Address implements Serializable {
+public class Address implements Serializable, IAddress{
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -770903418577291957L;
 	@Id
+	@Column(name="ADDRESS_ID")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	private String street;
 	private String housenumber;
-	@OneToMany(mappedBy="contact")
-	private Contact contact;
-	private int version;
 	
 	public Address() {
-
+		
 	}	
-	
 	
 	public Address(String street, String housenumber) {
 		this.street = street;
 		this.housenumber = housenumber;
-		this.setVersion(1);
 	}
 	
 	public int getId() {
@@ -64,27 +62,5 @@ public class Address implements Serializable {
 	
 	public void setHousenumber(String housenumber) {
 		this.housenumber = housenumber;
-	}
-	
-	public int getVersion() {
-		return version;
-	}
-
-	public void setVersion(int version) {
-		this.version = version;
-	}
-
-	public void incrementVersion() {
-		this.setVersion(this.getVersion() + 1);
-	}
-
-
-	public Contact getContact() {
-		return contact;
-	}
-
-
-	public void setContact(Contact contact) {
-		this.contact = contact;
 	}
 }
