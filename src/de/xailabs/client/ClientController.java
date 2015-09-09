@@ -91,6 +91,7 @@ public class ClientController {
 	 * @param selectedRow The contacts row in the table
 	 */
 	public void updateContact(IContact contact, int selectedRow) {
+		
 		commandObject = new CommandObject("update contact", contact);
 		serverConnection.sendCommand(commandObject);
 		contacts.set(selectedRow, contact);
